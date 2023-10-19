@@ -3,10 +3,19 @@ const app = express();
 const mongoose = require('mongoose');
 const soru = require('./models/soru.model');
 const pageRoute = require('./routes/page.route');
+const http = require('http');
+const socketIO = require('socket.io');
+const fs = require('fs');
+const bodyParser = require('body-parser');
+const path = require("path");
+
 
 
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
+const server = http.createServer( app);
+const io = socketIO(server);
+app.use(express.static(path.join(__dirname, "public")));
 
 
 mongoose.connect('mongodb://127.0.0.1:27017').then(()=>
@@ -24,29 +33,129 @@ app.get("/soru_kayit", async (req,res,next) =>{
     try {
         await soru.insertMany([
             {
-               Soru: "Türkiye'nin başkenti neresidir?",
-               A: "İstanbul",
-               B: "Ankara",
-               C: "Izmir",
-               D: "Muş",
-               Cevap: "Ankara"
+               Soru: "İlk programlanabilir bilgisayar fikrini ortaya atan ve bilgisayarın muciti olarak kabul edilen bilim insanı kimdir ?",
+               A: "Wright kardeşler",
+               B: "Charles Babbage",
+               C: "Paul Dirac",
+               D: "Thomas Hunt Morgan",
+               Cevap: "Charles Babbage"
             },
             {
-                Soru: "2+2 Kaçtır?",
-                A: "1",
-                B: "2",
-                C: "3",
-                D: "4",
-                Cevap: "4"
+                Soru: "İnternet ilk olarak hangi alanda kullanılmıştır ?",
+                A: "Bilim alanında kullanılmıştır",
+                B: "Askeri alanda kullanılmıştır.",
+                C: "Sağlık alanında kullanılmıştır.",
+                D: "Eğitim alanında kullanılmıştır.",
+                Cevap: "Askeri alanda kullanılmıştır."
             },
             {
-                Soru: "Test?",
-                A: "Test",
-                B: "test..",
-                C: "Test?",
-                D: "Test!",
-                Cevap: "Test"
-            }
+                Soru: "John Backus liderliğinde bir ekip tarafından geliştirilen başarılı ilk üst düzey programlama dili hangisidir ?",
+                A: "FORTRAN",
+                B: "LISP",
+                C: "ALGOL",
+                D: "COBOL",
+                Cevap: "FORTRAN"
+            },
+            {
+                Soru: "Speedtest tarafından açıklanan listede dünyanın en hızlı internet ortalamasına sahip ülke hangisidir?",
+                A: "Tayland",
+                B: "Çin",
+                C: "Singapur",
+                D: "ABD",
+                Cevap: "Singapur"
+            },
+            {
+                Soru: "İlk bilgisayar programcısı olarak kabul edilen İngiliz asıllı bilim insanı kimdir ?",
+                A: "David Goodall",
+                B: "John Frederic Daniell",
+                C: "Roger Bacon",
+                D: "Ada Lovelace",
+                Cevap: "Ada Lovelace"
+            },
+            {
+                Soru: "Dünyada genel olarak internet üzerinden en fazla arama yapılan arama motoru hangisidir ?",
+                A: "Yandex",
+                B: "Bing",
+                C: "Google",
+                D: "Baidu",
+                Cevap: "Google"
+            },
+            {
+                
+                Soru: "Google'ın geliştiricilerinin orijinal bir imla değişikliği yaparak “Google” olarak adlandırdığı ismin kökeni olan matematik teriminin adı nedir?",
+                A: "Googol",
+                B: "Googl",
+                C: "Googlo",
+                D: "Goog",
+                Cevap: "Googol"
+            },
+            {
+                Soru: "İlk Kişisel Bilgisayar virüsü hangisidir?",
+                A: "Trap Doors",
+                B: "Conficker",
+                C: "Brain",
+                D: "Exploit.",
+                Cevap: "Brain"
+            },
+            {
+                Soru: "Google’ın bünyesinde bulunan Android ilk ne zaman piyasaya sunulmuştur?",
+                A: "22 Ekim 2003",
+                B: "14 Aralık 2000",
+                C: "9 Temmuz 2010",
+                D: "23 Eylül 2008",
+                Cevap: "23 Eylül 2008"
+            },
+            
+            {
+                Soru: "Hangisi Google’ın güncel hizmetlerinden değildir?",
+                A: "Google Maps",
+                B: "Google Sheets",
+                C: "Google Meet",
+                D: "Google Play Music",
+                Cevap: "Google Play Music"
+            },
+            {
+                Soru: "Yaşar Üniversitesi Google Developer Student Clubs da 2023-2024 akademik döneminde Core Team de kaç kişi vardır?",
+                A: "20",
+                B: "18",
+                C: "24",
+                D: "22",
+                Cevap: "24"
+            },
+            {
+                Soru: "Araştırma şirketlerin verileri sonucu 2023 yılında dünya da en çok kullanılan yazılım dili hangisidir?",
+                A: "C",
+                B: "JavaScript",
+                C: "Pyhton",
+                D: "C++",
+                Cevap: "JavaScript"
+            },
+            {
+                Soru: "Hangisi Google’ın kurucularından biridir ? ",
+                A: "Mark Zuckerberg",
+                B: "Larry Page",
+                C: "Sundar Pichai",
+                D: "Andrew McCollu",
+                Cevap: "Larry Page"
+            },
+            {
+                Soru: "Google’ın yan kuruluşlarından olan YouTube’da en çok hangi video türleri izleniyor? ",
+                A: "Makyaj Videoları",
+                B: "Oyun Videoları",
+                C: "Müzik Videoları",
+                D: "Eğitim Videoları",
+                Cevap: "Müzik Videoları"
+            },
+            {
+                Soru: "Google’ın logosunda bulunan harflerin hangisinin rengi yanlış verilmiştir ? ",
+                A: "G - mavi",
+                B: "E - kırmızı",
+                C: "L - sarı",
+                D: "O - kırmızı",
+                Cevap: "L - sarı"
+            },
+
+  
         ])
         res.send("sorular saved successfully");
     
@@ -60,8 +169,24 @@ app.get("/soru_kayit", async (req,res,next) =>{
 const odalar = {};
 let first = 0;
 
-let sorular = await soru.distinct();
+async function getDistinctSorular() {
+    const questions = await soru.find({});
+    return questions;
+  }
+
+
+let sorular = getDistinctSorular();
 let index = 0;
+let test = {
+    question: sorular[0],
+    xd: "12345xdxd" , // startta yollanacak hash key
+    length: sorular.length
+};
+
+let sıralama = 0;
+
+
+
 
 
 io.on('connection', (socket) => {
@@ -80,6 +205,8 @@ io.on('connection', (socket) => {
             odalar[odaAdi][kullaniciAdi] = []
             odalar[odaAdi][kullaniciAdi].push({puan:0});
             odalar[odaAdi][kullaniciAdi].push({streak:0});
+            io.to(socket.id).emit("sıralama",sıralama);
+            sıralama++;
           }
           else
           {
@@ -89,7 +216,7 @@ io.on('connection', (socket) => {
     })
     
     socket.on("start", info => {
-       io.in(info.odaAdi).emit("sorugeldi", sorular[0])
+       io.in(info.odaAdi).emit("başlatıdlı", test)
        index = 1;
     })
     
@@ -138,6 +265,7 @@ io.on('connection', (socket) => {
         {
             io.in("next",sorular[index])//öne yolla
             index++;
+            first = 0;
         }
         else
         {
